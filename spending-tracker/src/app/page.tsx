@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="bg-white h-screen">
       <Navbar/>
-      <div className=" h-5/6 flex flex-col place-content-evenly">
+      <div className="h-5/6 flex flex-col place-content-evenly">
         <section className="text-black flex place-content-evenly p-5">
           {/* USE MIN-WIDTH and MAX-WIDTH TO ACCOUNT FOR INCREASING LENGTHS IN THE NUMBERS */}
           <div className="bg-white flex w-96 place-content-evenly items-center">
