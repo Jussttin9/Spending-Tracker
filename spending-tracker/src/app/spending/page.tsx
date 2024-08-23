@@ -3,17 +3,28 @@
 import { useState } from "react";
 import Navbar from "../navbar";
 import Image from "next/image";
+import ReceiptItem from "../COMPONENTS/receipt_item";
 
 export default function Spending() {
     const [itemName, setItemName] = useState('');
     const [itemCost, setItemCost] = useState('');
 
+    const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setItemName(event.target.value);
+    }
+
     const handleCost = (event: React.ChangeEvent<HTMLInputElement>) => {
         let price = event.target.value;
 
-        if (price.length == 1) {
+        if (price.length == 0) {
+            setItemCost('$0.00');
+            return;
+        } else if (price.length == 1) {
             price = '$0.0' + price;
             setItemCost(price);
+            return;
+        } else if (price.length > 23) {
+            setItemCost(price.slice(0, 23));
             return;
         }
 
@@ -51,20 +62,43 @@ export default function Spending() {
                         <div className="text-4xl text-[#1A5100]">$50,914.11 (Spending)</div>
                     </div>
                 </section>
-                <section className="text-black flex place-content-evenly">
+                <section className="text-black flex place-content-evenly items-center">
                     <div>
-                        Image of receipt history
+                        <div className="absolute h-92 w-64 translate-x-20 translate-y-28 flex flex-col overflow-auto">
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                            <ReceiptItem item={'Food'} cost={'$37.94'}/>
+                        </div>
+                        <Image
+                            height={567}
+                            width={422}
+                            alt="receipt-history"
+                            src="/receipt.png"
+                        />
                     </div>
-                    <div className="bg-[#E9E9E9] h-108 w-120 flex flex-col place-content-evenly">
+                    <div className="bg-[#E9E9E9] h-108 w-120 flex flex-col place-content-evenly p-6">
                         <div className="flex place-content-evenly">
-                            <p>What did you purchase?</p>
-                            <input type="text" step="0.01" required></input>
+                            <p className="text-3xl text-center">What did you purchase?</p>
+                            <input onChange={handleName} placeholder="Item Name" type="text" required className="bg-[#D9D9D9] text-3xl w-44"></input>
                         </div>
                         <div className="flex place-content-evenly">
-                            <p>How much did it cost?</p>
-                            <input onChange={handleCost} placeholder="$0.00" value={itemCost} type="text" pattern="[0-9]*" required></input>
+                            <p className="text-3xl text-center">How much did it cost?</p>
+                            <input onChange={handleCost} placeholder="$0.00" value={itemCost} type="text" pattern="[0-9]*" required className="bg-[#D9D9D9] text-3xl w-44"></input>
                         </div>
-                        <div className="flex place-content-evenly"><button>Enter {itemCost}</button></div>
+                        <button><div className="bg-[#D9D9D9] flex flex-col place-content-evenly h-14">Enter</div></button>
                     </div>
                 </section>
             </div>
