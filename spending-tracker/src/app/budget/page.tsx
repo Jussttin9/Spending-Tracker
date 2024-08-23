@@ -71,12 +71,12 @@ export default function Budget() {
                         <ul>
                             <li><strong>Needs</strong> can be any necessity in order to live comfortably such as rent, bills, insurance, and food.</li>
                             <li><strong>Wants</strong> can refer to any item that you
-                        personally want to buy or do such as vacations, going out to a restaurant, or an item you've been wanting to buy for yourself.</li>
+                        personally want to buy or do such as vacations, going out to a restaurant, or an item you&apos;ve been wanting to buy for yourself.</li>
                             <li>The rest of your money should be going into some <strong>savings plan</strong> such as a savings account, a 401k, and/or a Roth IRA.</li>
                         </ul>
                     </AccordionInfo>
                     <AccordionInfo title="Zero-Based Budget">
-                        <p>The idea of a <strong>Zero-Based Budget</strong> is when you budget your money to where your income minus your expenses <em>equals zero</em>. It basically means that you're portioning your money 
+                        <p>The idea of a <strong>Zero-Based Budget</strong> is when you budget your money to where your income minus your expenses <em>equals zero</em>. It basically means that you&apos;re portioning your money 
                         in such a way where all of your money is needed somewhere, whether it be for needs or personal wants.</p>
                         <br/>       
                         <p>First figure out your monthly income and then figure out and list your expenses. Next, subtract your expenses from your income. If you end up running out of money and you still have a list of expenses left then you may have to do one of two things or both.</p> 
@@ -85,7 +85,7 @@ export default function Budget() {
                         </AccordionInfo>
                     <AccordionInfo title="Pay Yourself First">
                         <p>The <strong>Pay Yourself First Budget</strong> is a budgeting method where, like it says, you pay yourself first. Before using this method, think about what you want to achieve with your money, it could be something like paying off debt or creating an emergency fund.
-                        Once you've figured that out, once you get your paycheck, you first set aside a portion of money to help you progress towards that goal. Then your remaining money is used for expenses and personal wants.</p>
+                        Once you&apos;ve figured that out, once you get your paycheck, you first set aside a portion of money to help you progress towards that goal. Then your remaining money is used for expenses and personal wants.</p>
                     </AccordionInfo>
                 </div>
             </section>
