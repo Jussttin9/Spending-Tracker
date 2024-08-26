@@ -1,8 +1,26 @@
+'use client'
+
 import Card from "./COMPONENTS/card";
 import Image from "next/image";
 import Navbar from "./navbar";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [saving, setSaving] = useState(0);
+  const [spending, setSpending] = useState(0);
+
+  const loadUser = async () => {
+    const response = await axios.get('http://localhost:4000/user/get-info/999');
+    const user = response.data;
+    setSaving(user.savings);
+    setSpending(user.spending);
+  }
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
   return (
     <div className="bg-white h-screen">
       <Navbar/>
@@ -16,7 +34,7 @@ export default function Home() {
               alt='savings icon'
               src='/save.jpg'
             />
-            <div className="text-4xl text-[#1A5100]">$300,145.92 (Savings)</div>
+            <div className="text-4xl text-[#1A5100]">${saving} (Savings)</div>
           </div>
           <div className="bg-white flex w-96 place-content-evenly items-center">
             <Image 
@@ -25,7 +43,7 @@ export default function Home() {
               alt='spendings icon'
               src='/spend.jpg'
             />
-            <div className="text-4xl text-[#1A5100]">$50,914.11 (Spending)</div>
+            <div className="text-4xl text-[#1A5100]">${spending} (Spending)</div>
           </div>
         </section>
         <section className="text-black flex place-content-evenly">
