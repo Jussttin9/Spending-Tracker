@@ -29,6 +29,15 @@ const config: Config = {
         '112': '28rem',
       },
     },
+    screens: {
+      'xs': '320px',
+      'mobile-md': '375px',
+      'mobile-lg': '425px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+    },
   },
   plugins: [],
 };

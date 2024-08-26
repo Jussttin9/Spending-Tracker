@@ -26,7 +26,7 @@ const registerUser = async (id, email, savings, spending, budget) => {
         const newUser = new User({
             _id: id,
             createdUser: curDate,
-            lastUpdated: curDate,
+            lastLogged: curDate,
             email: email,
             items: [],
             savings: savings,

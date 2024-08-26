@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const UserSchema = new Schema({
     _id: String,
     createdUser: Date,
-    lastUpdated: Date,
+    lastLogged: Date,
     email: String,
     items: [{
         type: Schema.Types.ObjectId,

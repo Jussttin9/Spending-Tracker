@@ -51,7 +51,7 @@ export default function Savings() {
     return (
         <div className="bg-white h-fit">
             <Navbar/>
-            <div className="h-fit flex flex-col place-content-between">
+            <div className="h-fit flex flex-col gap-2 place-content-between">
                 <section className="h-112 flex place-content-center items-center">
                     <div className="bg-white flex w-96 place-content-evenly items-center">
                         <Image 
@@ -63,9 +63,9 @@ export default function Savings() {
                         <div className="text-4xl text-[#1A5100]">$300,145.92 (Savings)</div>
                     </div>
                 </section>
-                <section className="text-black flex place-content-evenly items-center">
+                <section className="text-black flex flex-col lg:flex-row place-content-evenly items-center">
                     <div>
-                        <div className="absolute h-92 w-64 translate-x-20 translate-y-28 flex flex-col overflow-auto">
+                        <div className="absolute h-72 w-3/5 mobile-md:h-80 mobile-md:w-56 mobile-lg:h-92 mobile-lg:w-64 translate-x-16 translate-y-20 mobile-md:translate-x-20 mobile-md:translate-y-24 mobile-lg:translate-x-20 mobile-lg:translate-y-28 flex flex-col overflow-auto">
                             <ReceiptItem item={'Food'} cost={'$37.94'}/>
                             <ReceiptItem item={'Food'} cost={'$37.94'}/>
                             <ReceiptItem item={'Food'} cost={'$37.94'}/>
@@ -90,20 +90,20 @@ export default function Savings() {
                             src="/receipt.png"
                         />
                     </div>
-                    <div className="bg-[#E9E9E9] h-108 w-120 flex flex-col place-content-evenly p-6">
-                        <div className="flex place-content-evenly">
-                            <p className="text-3xl text-center">What did you purchase?</p>
-                            <input onChange={handleName} placeholder="Item Name" type="text" required className="bg-[#D9D9D9] text-3xl w-44"></input>
+                    <div className="bg-[#E9E9E9] h-80 w-80 mobile-lg:h-92 mobile-lg:w-96 sm:h-108 sm:w-120 flex flex-col place-content-evenly p-6">
+                        <div className="flex gap-2 place-content-evenly">
+                            <p className="text-xl mobile-lg:text-2xl sm:text-3xl text-center">What did you purchase?</p>
+                            <input onChange={handleName} placeholder="Item Name" type="text" required className="bg-[#D9D9D9] text-xl mobile-lg:text-2xl sm:text-3xl w-44"></input>
                         </div>
-                        <div className="flex place-content-evenly">
-                            <p className="text-3xl text-center">How much did it cost?</p>
-                            <input onChange={handleCost} placeholder="$0.00" value={itemCost} type="text" pattern="[0-9]*" required className="bg-[#D9D9D9] text-3xl w-44"></input>
+                        <div className="flex gap-2 place-content-evenly">
+                            <p className="text-xl mobile-lg:text-2xl sm:text-3xl text-center">How much did it cost?</p>
+                            <input onChange={handleCost} placeholder="$0.00" value={itemCost} type="text" pattern="[0-9]*" required className="bg-[#D9D9D9] text-xl mobile-lg:text-2xl sm:text-3xl w-44"></input>
                         </div>
                         <button><div className="bg-[#D9D9D9] flex flex-col place-content-evenly h-14">Enter</div></button>
                     </div>
                 </section>
                 <section className="bg-[#E9E9E9]">
-                    <div className="text-black text-5xl flex justify-center m-6"><h2>Common Saving Methods</h2></div>
+                    <div className="text-black text-3xl md:text-5xl flex justify-center m-6"><h2>Common Saving Methods</h2></div>
                     <div className="min-h-112 h-fit flex flex-col m-3 gap-4">
                         <AccordionInfo title="Savings Account">
                             <p>A savings account is one of the most common ways that people save their money. Whenever you get your paycheck you can put some into your savings account as an emergency fund or to use to buy something big like a house or a car.</p>

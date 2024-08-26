@@ -63,7 +63,7 @@ export default function Budget() {
                 <button onClick={() => setTogglePopup(!togglePopup)} className="h-fit"><div className="bg-[#E9E9E9] text-3xl text-black p-4 rounded-5xl overflow-hidden">Budget Your Paycheck</div></button>
             </section>
             <section className="bg-[#E9E9E9]">
-                <div className="text-black text-5xl flex justify-center m-6"><h2>Budgeting Methods</h2></div>
+                <div className="text-black text-3xl md:text-5xl flex justify-center m-6"><h2>Budgeting Methods</h2></div>
                 <div className="min-h-112 h-fit flex flex-col m-3 gap-4">
                     <AccordionInfo title="50/30/20 Budget">
                         <p>The general idea of the <strong>50/30/20 Budget</strong> is to budget 50% of your money towards <strong>needs</strong>, 30% towards <strong>wants</strong>, and 20% towards <strong>savings</strong>. </p>
@@ -96,20 +96,20 @@ export default function Budget() {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5, ease: 'easeInOut'}}
                     >
-                        <m.div className="absolute bg-white rounded-5xl h-5/6 w-3/6 z-10 text-black flex flex-col place-content-evenly p-6"
+                        <m.div className="absolute bg-white rounded-5xl h-5/6 w-5/6 lg:w-3/6 z-10 text-black flex flex-col place-content-evenly p-6"
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ duration: 0.5, ease: 'easeInOut'}}
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="flex place-content-between">
-                                <p className="text-3xl text-center">How much did you earn?</p>
-                                <input onChange={handleCost} placeholder="$0.00" value={itemCost} type="text" pattern="[0-9]*" required className="bg-[#D9D9D9] text-5xl w-72"></input>
+                                <p className="text-xl md:text-3xl text-center">How much did you earn?</p>
+                                <input onChange={handleCost} placeholder="$0.00" value={itemCost} type="text" pattern="[0-9]*" required className="bg-[#D9D9D9] text-3xl md:text-5xl w-28 mobile-md:w-36 md:w-72"></input>
                             </div>
                             <div className="flex flex-col gap-y-4">
                                 <div className="flex place-content-between">
-                                    <p className="text-3xl text-center">How much do you want to save?</p>
-                                    <select className="bg-[#D9D9D9] text-5xl w-72" onChange={handlePercent} required>
+                                    <p className="text-xl md:text-3xl text-center">How much do you want to save?</p>
+                                    <select className="bg-[#D9D9D9] text-3xl md:text-5xl w-28 mobile-md:w-36 md:w-72" onChange={handlePercent} required>
                                         <option value="0%">0%</option>
                                         <option value="10%">10%</option>
                                         <option value="20%">20%</option>
@@ -126,8 +126,8 @@ export default function Budget() {
                                 </div>
                                 {toggleCustom && (
                                     <div className="flex place-content-between">
-                                        <p className="text-3xl text-center">Custom Percent</p>
-                                        <input type="number" min={0} max={100} required className="bg-[#D9D9D9] text-5xl w-72"></input>
+                                        <p className="text-xl md:text-3xl text-center">Custom Percent</p>
+                                        <input type="number" min={0} max={100} required className="bg-[#D9D9D9] text-5xl w-28 mobile-md:w-36 md:w-72"></input>
                                     </div>
                                 )}
                             </div>
@@ -138,8 +138,9 @@ export default function Budget() {
                                     width={100}
                                     alt='savings icon'
                                     src='/save.jpg'
+                                    className="hidden mobile-lg:block"
                                     />
-                                    <div className="text-4xl text-[#1A5100]">+ $3,145.92 (Savings)</div>
+                                    <div className="text-center text-2xl sm:text-4xl text-[#1A5100]">+ $3,145.92 (Savings)</div>
                                 </div>
                                 <div className="bg-white flex w-fit place-content-evenly items-center">
                                     <Image 
@@ -147,8 +148,9 @@ export default function Budget() {
                                     width={100}
                                     alt='spendings icon'
                                     src='/spend.jpg'
+                                    className="hidden mobile-lg:block"
                                     />
-                                    <div className="text-4xl text-[#1A5100]">+ $914.11 (Spending)</div>
+                                    <div className="text-center text-2xl sm:text-4xl text-[#1A5100]">+ $914.11 (Spending)</div>
                                 </div>
                             </div>
                             <button onClick={() => setTogglePopup(!togglePopup)}><div className="bg-[#D9D9D9] flex flex-col place-content-evenly h-14 text-2xl">Enter</div></button>

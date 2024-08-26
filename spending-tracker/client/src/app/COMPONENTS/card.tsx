@@ -13,12 +13,12 @@ interface CardProps {
 
 export default function Card( { page, img, hoverImg, color, children }: CardProps ) {
     const [isHovered, setHovered] = useState(false);
-    const divStyle = color + " h-112 w-72 rounded-5xl overflow-hidden text-4xl flex flex-col place-content-evenly items-center transition duration-300 ease-in-out hover:scale-105";
+    const divStyle = color + " sm:h-80 sm:w-40 md:h-96 md:w-56 lg:h-112 lg:w-72 rounded-5xl overflow-hidden xs:text-2xl md:text-4xl flex flex-col place-content-evenly items-center transition duration-300 ease-in-out hover:scale-105";
     const onMouseEnter = () => setHovered(true);
     const onMouseExit = () => setHovered(false);
     
     return (
-        <Link href={`/${page}`}>
+        <Link href={`/${page}`} className="w-fit">
             <div className={divStyle} onMouseEnter={onMouseEnter} onMouseLeave={onMouseExit}>
                 { isHovered ? (
                     <Image
@@ -26,7 +26,7 @@ export default function Card( { page, img, hoverImg, color, children }: CardProp
                     width={245}
                     alt='Icon'
                     src={hoverImg}
-                    className="h-60 w-60"
+                    className="md:h-44 md:w-44 lg:h-60 lg:w-60"
                     />
                 ) : (
                     <Image
@@ -34,10 +34,10 @@ export default function Card( { page, img, hoverImg, color, children }: CardProp
                     width={245}
                     alt='Icon'
                     src={img}
-                    className="h-60 w-60 object-cover"
+                    className="md:h-44 md:w-44 lg:h-60 lg:w-60 object-cover"
                     />
                 )}
-                <div>{children}</div>
+                <div className="text-center">{children}</div>
             </div>
         </Link>
     );

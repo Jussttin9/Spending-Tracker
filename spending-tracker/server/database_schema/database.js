@@ -8,7 +8,6 @@ const connectToDatabase = async () => {
         console.log('Connected to MongoDB database');
     } catch (error) {
         console.error('Error connecting to MongoDB database:', error.message);
-        console.error('Make sure that your DB_URL in the .env file is correct.');
     }
 };
 

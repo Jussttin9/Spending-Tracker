@@ -20,11 +20,11 @@ export default function AccordionInfo ({ title, children, defaultExpanded, color
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1-content"
                 id="panel1-header"
-                className='text-3xl'
+                className='text-xl md:text-3xl'
                 >
                     {title}
                 </AccordionSummary>
-                <AccordionDetails className='text-xl'>
+                <AccordionDetails className='text-md md:text-xl'>
                     {children}
                 </AccordionDetails>
             </Accordion>
