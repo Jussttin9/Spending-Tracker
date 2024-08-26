@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from "react";
-import Navbar from "../navbar";
+import Navbar from "../../navbar";
 import Image from "next/image";
 import { motion as m } from "framer-motion";
-import AccordionInfo from "../COMPONENTS/accordion";
+import AccordionInfo from "../../COMPONENTS/accordion";
 
 export default function Budget() {
     const [togglePopup, setTogglePopup] = useState(false);
@@ -96,7 +96,7 @@ export default function Budget() {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5, ease: 'easeInOut'}}
                     >
-                        <m.div className="absolute bg-white rounded-5xl h-5/6 w-5/6 lg:w-3/6 z-10 text-black flex flex-col place-content-evenly p-6"
+                        <m.div className="absolute bg-white rounded-5xl overflow-hidden overflow-y-auto min-h-fit h-5/6 w-5/6 lg:w-3/6 z-10 text-black flex flex-col place-content-evenly p-6"
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ duration: 0.5, ease: 'easeInOut'}}

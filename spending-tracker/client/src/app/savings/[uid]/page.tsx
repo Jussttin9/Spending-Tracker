@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from "react";
-import AccordionInfo from "../COMPONENTS/accordion";
-import ReceiptItem from "../COMPONENTS/receipt_item";
-import Navbar from "../navbar";
+import AccordionInfo from "../../COMPONENTS/accordion";
+import ReceiptItem from "../../COMPONENTS/receipt_item";
+import Navbar from "../../navbar";
 import Image from "next/image";
 
 export default function Savings() {

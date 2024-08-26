@@ -24,7 +24,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-white xs:h-fit sm:h-screen overflow-hidden">
+    <div className="bg-white min-h-screen xs:h-fit overflow-hidden">
       <Navbar/>
       <div className="h-5/6 flex flex-col place-content-evenly">
         <section className="text-black flex flex-col md:flex-row place-content-evenly items-center p-5">
@@ -51,9 +51,9 @@ export default function Home() {
           </div>
         </section>
         <section className="text-black flex place-content-evenly items-center gap-3 flex-col sm:flex-row md:flex-row lg:flex-row">
-          <Card page="spending" img="/file.png" hoverImg="/vault_open.png" color="bg-[#E9E9E9]">Spending</Card>
-          <Card page="budget" img="/Notebook.jpg" hoverImg="/vault_open.png" color="bg-[#E4DBD2]">Budget Tracker</Card>
-          <Card page="savings" img="/vault_closed.png" hoverImg="/vault_open.png" color="bg-[#E9E9E9]">Savings</Card>
+          <Card page="spending/999" img="/file.png" hoverImg="/vault_open.png" color="bg-[#E9E9E9]">Spending</Card>
+          <Card page="budget/999" img="/Notebook.jpg" hoverImg="/vault_open.png" color="bg-[#E4DBD2]">Budget Tracker</Card>
+          <Card page="savings/999" img="/vault_closed.png" hoverImg="/vault_open.png" color="bg-[#E9E9E9]">Savings</Card>
         </section>
       </div>
     </div>

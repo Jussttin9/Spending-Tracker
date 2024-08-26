@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from "react";
-import Navbar from "../navbar";
+import Navbar from "../../navbar";
 import Image from "next/image";
-import ReceiptItem from "../COMPONENTS/receipt_item";
+import ReceiptItem from "../../COMPONENTS/receipt_item";
 
 export default function Spending() {
     const [itemName, setItemName] = useState('');
