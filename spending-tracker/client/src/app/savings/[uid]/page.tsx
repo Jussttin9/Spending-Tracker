@@ -27,7 +27,7 @@ export default function Savings({ params }: { params: { uid: string }}) {
 
     const loadUser = async () => {
         try {
-            const response = await axios.get(`http://localhost:4000/user/get-info/${userID}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/get-info/${userID}`);
             const user = response.data;
             setItems(user.savingsItems);
             setSaving(user.savings);
@@ -46,20 +46,20 @@ export default function Savings({ params }: { params: { uid: string }}) {
 
     const removeItem = async (key: number) => {
         try {
-            const response = await axios.get(`http://localhost:4000/user/get-info/${userID}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/get-info/${userID}`);
             const user = response.data;
             const userItems = user.savingsItems;
             const userItemCost = userItems[userItems.length-1-key].cost;
             const newSave = parseFloat((saving + userItemCost).toFixed(2));
             
-            await axios.delete('http://localhost:4000/item/delete-saving', {
+            await axios.delete(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/item/delete-saving`, {
                 params: {
                     userID: userID,
                     item_id: userItems[userItems.length - 1 - key]._id
                 }
             });
 
-            await axios.put('http://localhost:4000/user/update-saving', {
+            await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-saving`, {
                 userID: userID,
                 newSavings: newSave
             });
@@ -117,7 +117,7 @@ export default function Savings({ params }: { params: { uid: string }}) {
         setError(null);
         if (itemName.length > 0) {
             try {
-                await axios.post('http://localhost:4000/item/add-saving', {
+                await axios.post(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/item/add-saving`, {
                     userID: userID,
                     name: itemName,
                     cost: itemVal
@@ -125,7 +125,7 @@ export default function Savings({ params }: { params: { uid: string }}) {
 
                 const newSave = parseFloat((saving - itemVal).toFixed(2));
 
-                await axios.put('http://localhost:4000/user/update-saving', {
+                await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-saving`, {
                     userID: userID,
                     newSavings: newSave
                 });

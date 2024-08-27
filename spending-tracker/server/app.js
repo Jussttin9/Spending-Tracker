@@ -10,9 +10,19 @@ const cors = require('cors');
 var usersRouter = require('./routes/users');
 var itemsRouter = require('./routes/items');
 
+const allowedOrigins = ['http://localhost:3000', 'https://in-the-bank.vercel.app'];
+
 var app = express();
 dotenv.config();
-app.use(cors());
+app.use(cors({
+  origin: function (origin, callback) {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -26,7 +26,7 @@ export default function Budget({ params }: { params: { uid: string }}) {
 
     const loadUser = async () => {
         try {
-            const response = await axios.get(`http://localhost:4000/user/get-info/${userID}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/get-info/${userID}`);
             const user = response.data;
             setUserPercent(user.budget);
             setOldSpend(user.spending);
@@ -141,7 +141,7 @@ export default function Budget({ params }: { params: { uid: string }}) {
         setError(null);
         if (itemCost.length > 0) {
             try {
-                await axios.put('http://localhost:4000/user/update-budget', {
+                await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-budget`, {
                     userID: userID,
                     newBudget: parseFloat(percent)
                 });
@@ -149,12 +149,12 @@ export default function Budget({ params }: { params: { uid: string }}) {
                 const newSpend = parseFloat((parseFloat(addSpend) + oldSpend).toFixed(2));
                 const newSave = parseFloat((parseFloat(addSave) + oldSave).toFixed(2));
 
-                await axios.put('http://localhost:4000/user/update-spending', {
+                await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-spending`, {
                     userID: userID,
                     newSpending: newSpend
                 });
 
-                await axios.put('http://localhost:4000/user/update-saving', {
+                await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-saving`, {
                     userID: userID,
                     newSavings: newSave
                 });

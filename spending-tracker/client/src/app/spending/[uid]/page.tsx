@@ -27,21 +27,21 @@ export default function Spending({ params }: { params: { uid: string }}) {
 
     const removeItem = async (key: number) => {
         try {
-            const response = await axios.get(`http://localhost:4000/user/get-info/${userID}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/get-info/${userID}`);
             const user = response.data;
             const userItems = user.items;
             console.log(userItems);
             const userItemCost = userItems[userItems.length-1-key].cost;
             const newSpend = parseFloat((spending + userItemCost).toFixed(2));
             
-            await axios.delete('http://localhost:4000/item/delete-item', {
+            await axios.delete(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/item/delete-item`, {
                 params: {
                     userID: userID,
                     item_id: userItems[userItems.length - 1 - key]._id
                 }
             });
 
-            await axios.put('http://localhost:4000/user/update-spending', {
+            await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-spending`, {
                 userID: userID,
                 newSpending: newSpend
             });
@@ -63,7 +63,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
 
     const loadUser = async () => {
         try {
-            const response = await axios.get(`http://localhost:4000/user/get-info/${userID}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/get-info/${userID}`);
             const user = response.data;
             setItems(user.items);
             setSpending(user.spending);
@@ -119,7 +119,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
         setError(null);
         if (itemName.length > 0) {
             try {
-                await axios.post('http://localhost:4000/item/add-item', {
+                await axios.post(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/item/add-item`, {
                     userID: userID,
                     name: itemName,
                     cost: itemVal
@@ -127,7 +127,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
 
                 const newSpend = parseFloat((spending - itemVal).toFixed(2));
 
-                await axios.put('http://localhost:4000/user/update-spending', {
+                await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-spending`, {
                     userID: userID,
                     newSpending: newSpend
                 });

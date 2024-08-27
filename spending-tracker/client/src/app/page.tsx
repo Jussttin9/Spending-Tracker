@@ -12,7 +12,7 @@ export default function Home() {
   const [lastLogged, setLastLogged] = useState("");
 
   const loadUser = async () => {
-    const response = await axios.get('http://localhost:4000/user/get-info/999');
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/get-info/999`);
     const user = response.data;
     setLastLogged(user.lastLogged);
     setSaving(user.savings);
