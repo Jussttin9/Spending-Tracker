@@ -7,8 +7,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [saving, setSaving] = useState(null);
-  const [spending, setSpending] = useState(null);
+  const [saving, setSaving] = useState(0);
+  const [spending, setSpending] = useState(0);
   const [lastLogged, setLastLogged] = useState("");
 
   const loadUser = async () => {
@@ -24,11 +24,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen xs:h-fit overflow-hidden">
+    <div className="bg-white min-h-screen xs:h-fit md:h-screen overflow-hidden">
       <Navbar/>
       <div className="h-5/6 flex flex-col place-content-evenly">
         <section className="text-black flex flex-col md:flex-row place-content-evenly items-center p-5">
-          {/* USE MIN-WIDTH and MAX-WIDTH TO ACCOUNT FOR INCREASING LENGTHS IN THE NUMBERS */}
           <div className="bg-white flex w-96 place-content-evenly items-center">
             <Image 
               height={100}
@@ -37,7 +36,7 @@ export default function Home() {
               src='/save.jpg'
               className="hidden sm:block sm:h-28 sm:w-28"
             />
-            <div className="text-2xl md:text-4xl text-[#1A5100]">${saving} (Savings)</div>
+            <div className="text-2xl md:text-4xl text-[#1A5100]">{String(saving).charAt(0) === '-' ? `${String(saving).charAt(0)}$${String(saving).slice(1)}` : `$${saving}`} (Savings)</div>
           </div>
           <div className="bg-white flex w-96 place-content-evenly items-center">
             <Image 
@@ -47,7 +46,7 @@ export default function Home() {
               src='/spend.jpg'
               className="hidden sm:block sm:h-28 sm:w-28"
             />
-            <div className="text-2xl md:text-4xl text-[#1A5100]">${spending} (Spending)</div>
+            <div className="text-2xl md:text-4xl text-[#1A5100]">{String(spending).charAt(0) === '-' ? `${String(spending).charAt(0)}$${String(spending).slice(1)}` : `$${spending}`} (Spending)</div>
           </div>
         </section>
         <section className="text-black flex place-content-evenly items-center gap-3 flex-col sm:flex-row md:flex-row lg:flex-row">

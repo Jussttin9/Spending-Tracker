@@ -10,6 +10,10 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Item'
     }],
+    savingsItems: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Item'
+    }],
     savings: Number,
     spending: Number,
     budget: Number,

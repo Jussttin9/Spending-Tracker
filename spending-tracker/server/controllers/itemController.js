@@ -25,9 +25,33 @@ const addItem = async (req, res) => {
     }
 }
 
+const addSavingItem = async (req, res) => {
+    try {
+        const { userID, name, cost } = req.body;
+        const user = await User.findById(userID);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const newItem = new Item ({
+            name: name,
+            cost: cost
+        })
+
+        await newItem.save();
+        user.savingsItems.push(newItem);
+        await user.save();
+
+        res.status(201).json(newItem);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 const deleteItem = async (req, res) => {
     try {
-        const { userID, item_id } = req.body;
+        const { userID, item_id } = req.query;
         const user = await User.findById(userID).populate('items');
 
         if (!user) {
@@ -45,4 +69,24 @@ const deleteItem = async (req, res) => {
     }
 }
 
-module.exports = { addItem, deleteItem };
+const deleteSavingItem = async (req, res) => {
+    try {
+        const { userID, item_id } = req.query;
+        const user = await User.findById(userID).populate('savingsItems');
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        user.savingsItems = user.savingsItems.filter((item) => item && item._id != item_id);
+
+        await user.save();
+        await Item.findByIdAndDelete(item_id);
+
+        res.status(201).json(user.savingsItems);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports = { addItem, addSavingItem, deleteItem, deleteSavingItem };

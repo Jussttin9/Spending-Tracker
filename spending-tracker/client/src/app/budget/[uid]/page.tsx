@@ -1,16 +1,64 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../navbar";
 import Image from "next/image";
+import axios from "axios";
 import { motion as m } from "framer-motion";
 import AccordionInfo from "../../COMPONENTS/accordion";
 
-export default function Budget() {
+export default function Budget({ params }: { params: { uid: string }}) {
     const [togglePopup, setTogglePopup] = useState(false);
     const [toggleCustom, setToggleCustom] = useState(false);
     const [itemCost, setItemCost] = useState('');
     const [percent, setPercent] = useState('');
+    const [error, setError] = useState<string | null>(null);
+
+    const [addSpend, setAddSpend] = useState('0.00');
+    const [addSave, setAddSave] = useState('0.00');
+    const [oldSpend, setOldSpend] = useState(0);
+    const [oldSave, setOldSave] = useState(0);
+
+    const [userPercent, setUserPercent] = useState(0);
+
+    const userID = params.uid;
+    const percentOptions = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+
+    const loadUser = async () => {
+        try {
+            const response = await axios.get(`http://localhost:4000/user/get-info/${userID}`);
+            const user = response.data;
+            setUserPercent(user.budget);
+            setOldSpend(user.spending);
+            setOldSave(user.savings);
+            loadOptions(user.budget);
+        } catch (error) {
+            console.error("Failed to load user:", error);
+        }
+    }
+
+    const loadOptions = (budget: number) => {
+        if (budget % 10 !== 0) {
+            setToggleCustom(true);
+            setPercent(String(budget));
+        } else {
+            setToggleCustom(false);
+            setPercent(String(budget));
+        }
+    }
+
+    const updateValues = () => {
+        if (itemCost === '' || percent === '') {
+            setAddSave('0.00');
+            setAddSpend('0.00');
+            return;
+        }
+        const percentage = parseFloat(percent) / 100;
+        const newSave = (parseFloat(itemCost.slice(1)) * percentage).toFixed(2);
+        const newSpend = (parseFloat(itemCost.slice(1)) - parseFloat(newSave)).toFixed(2);
+        setAddSave(newSave);
+        setAddSpend(newSpend);
+    }
 
     const handleCost = (event: React.ChangeEvent<HTMLInputElement>) => {
         let price = event.target.value;
@@ -33,7 +81,6 @@ export default function Budget() {
                 res += price.charAt(i);
             }
         }
-        console.log(res)
         let newPrice = String(parseFloat(res));
 
         if (newPrice.length == 1) {
@@ -49,11 +96,91 @@ export default function Budget() {
     const handlePercent = (event: React.ChangeEvent<HTMLSelectElement>) => {
         if (event.target.value === "custom") {
             setToggleCustom(!toggleCustom);
+            setPercent('0');
         } else if (toggleCustom && event.target.value !== "custom") {
             setToggleCustom(!toggleCustom);
+            setPercent(event.target.value)
+        } else {
+            setPercent(event.target.value);
         }
-        setPercent(event.target.value)
     }
+
+    const handleBudget = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let percent = event.target.value;
+
+        if (percent.length == 0) {
+            setPercent('0');
+            return;
+        } else if (percent.length == 1) {
+            setPercent(percent);
+            return;
+        } else if (percent.length > 23) {
+            setPercent(percent.slice(0, 23));
+            return;
+        }
+
+        let res = ""
+        for (let i = 0; i < percent.length; i++) {
+            if(percent.charAt(i) !== '.') {
+                res += percent.charAt(i);
+            }
+        }
+        let newPrice = String(parseFloat(res));
+
+        if (newPrice.length <= 2) {
+            percent = newPrice;
+        } else {
+            percent = newPrice.slice(0, newPrice.length-2) + "." + newPrice.slice(newPrice.length-2)
+        }
+        if (parseFloat(percent) >= 0 && parseFloat(percent) <= 100) {
+            setPercent(percent);
+        }
+    }
+
+    const handleClick = async () => {
+        setError(null);
+        if (itemCost.length > 0) {
+            try {
+                await axios.put('http://localhost:4000/user/update-budget', {
+                    userID: userID,
+                    newBudget: parseFloat(percent)
+                });
+
+                const newSpend = parseFloat((parseFloat(addSpend) + oldSpend).toFixed(2));
+                const newSave = parseFloat((parseFloat(addSave) + oldSave).toFixed(2));
+
+                await axios.put('http://localhost:4000/user/update-spending', {
+                    userID: userID,
+                    newSpending: newSpend
+                });
+
+                await axios.put('http://localhost:4000/user/update-saving', {
+                    userID: userID,
+                    newSavings: newSave
+                });
+
+                setUserPercent(parseFloat(percent));
+                setItemCost('');
+                setTogglePopup(!togglePopup)
+            } catch (error) {
+                console.error("Error updating budget:", error);
+            }
+        } else {
+            setError("Please fill out all fields.");
+        }
+    }
+
+    useEffect(() => {
+        loadUser();
+    }, []);
+
+    useEffect(() => {
+        loadOptions(userPercent);
+    }, [togglePopup]);
+
+    useEffect(() => {
+        updateValues();
+    }, [itemCost, percent])
 
     return (
     <div className="bg-white h-fit">
@@ -109,25 +236,17 @@ export default function Budget() {
                             <div className="flex flex-col gap-y-4">
                                 <div className="flex place-content-between">
                                     <p className="text-xl md:text-3xl text-center">How much do you want to save?</p>
-                                    <select className="bg-[#D9D9D9] text-3xl md:text-5xl w-28 mobile-md:w-36 md:w-72" onChange={handlePercent} required>
-                                        <option value="0%">0%</option>
-                                        <option value="10%">10%</option>
-                                        <option value="20%">20%</option>
-                                        <option value="30%">30%</option>
-                                        <option value="40%">40%</option>
-                                        <option value="50%">50%</option>
-                                        <option value="60%">60%</option>
-                                        <option value="70%">70%</option>
-                                        <option value="80%">80%</option>
-                                        <option value="90%">90%</option>
-                                        <option value="100%">100%</option>
-                                        <option value="custom">Custom</option>
+                                    <select defaultValue={toggleCustom ? "custom" : percent} className="bg-[#D9D9D9] text-3xl md:text-5xl w-28 mobile-md:w-36 md:w-72" onChange={handlePercent} required>
+                                        {percentOptions.map((percentOption) => (
+                                            <option key={percentOption} value={`${percentOption}`}>{percentOption}%</option>
+                                        ))}
+                                        <option key="custom" value="custom" selected>Custom</option>
                                     </select>
                                 </div>
                                 {toggleCustom && (
                                     <div className="flex place-content-between">
                                         <p className="text-xl md:text-3xl text-center">Custom Percent</p>
-                                        <input type="number" min={0} max={100} required className="bg-[#D9D9D9] text-5xl w-28 mobile-md:w-36 md:w-72"></input>
+                                        <input type="text" value={percent} min={0} max={100} required onChange={handleBudget} pattern="[0-9]*" className="bg-[#D9D9D9] text-3xl md:text-5xl w-28 mobile-md:w-36 md:w-72"></input>
                                     </div>
                                 )}
                             </div>
@@ -140,7 +259,7 @@ export default function Budget() {
                                     src='/save.jpg'
                                     className="hidden mobile-lg:block"
                                     />
-                                    <div className="text-center text-2xl sm:text-4xl text-[#1A5100]">+ $3,145.92 (Savings)</div>
+                                    <div className="text-center text-2xl sm:text-4xl text-[#1A5100]">+ ${addSave} (Savings)</div>
                                 </div>
                                 <div className="bg-white flex w-fit place-content-evenly items-center">
                                     <Image 
@@ -150,10 +269,11 @@ export default function Budget() {
                                     src='/spend.jpg'
                                     className="hidden mobile-lg:block"
                                     />
-                                    <div className="text-center text-2xl sm:text-4xl text-[#1A5100]">+ $914.11 (Spending)</div>
+                                    <div className="text-center text-2xl sm:text-4xl text-[#1A5100]">+ ${addSpend} (Spending)</div>
                                 </div>
                             </div>
-                            <button onClick={() => setTogglePopup(!togglePopup)}><div className="bg-[#D9D9D9] flex flex-col place-content-evenly h-14 text-2xl">Enter</div></button>
+                            <div className="text-center">{error}</div>
+                            <button onClick={handleClick}><div className="bg-[#D9D9D9] flex flex-col place-content-evenly h-14 text-2xl">Enter</div></button>
                         </m.div>
                     </m.div>
                 </div>

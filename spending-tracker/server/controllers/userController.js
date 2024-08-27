@@ -6,7 +6,7 @@ const getUser = async (req, res) => {
     try {
         const userId = req.params.id;
         // Find the user by User ID and populates Trips
-        const user = await User.findById(userId).populate('items');
+        const user = await User.findById(userId).populate('items').populate('savingsItems');
 
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
@@ -29,6 +29,7 @@ const registerUser = async (id, email, savings, spending, budget) => {
             lastLogged: curDate,
             email: email,
             items: [],
+            savingsItems: [],
             savings: savings,
             spending: spending,
             budget: budget,

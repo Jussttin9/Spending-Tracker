@@ -28,6 +28,9 @@ const config: Config = {
         '4/5': '80%',
         '112': '28rem',
       },
+      maxWidth: {
+        '1/2': '50%',
+      },
     },
     screens: {
       'xs': '320px',
