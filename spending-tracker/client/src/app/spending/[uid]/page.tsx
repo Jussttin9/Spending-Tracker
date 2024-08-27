@@ -30,6 +30,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
             const response = await axios.get(`http://localhost:4000/user/get-info/${userID}`);
             const user = response.data;
             const userItems = user.items;
+            console.log(userItems);
             const userItemCost = userItems[userItems.length-1-key].cost;
             const newSpend = parseFloat((spending + userItemCost).toFixed(2));
             
@@ -118,7 +119,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
         setError(null);
         if (itemName.length > 0) {
             try {
-                await axios.post('http://localhost:4000/item/add-saving', {
+                await axios.post('http://localhost:4000/item/add-item', {
                     userID: userID,
                     name: itemName,
                     cost: itemVal
