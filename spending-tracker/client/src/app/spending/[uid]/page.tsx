@@ -23,6 +23,9 @@ export default function Spending({ params }: { params: { uid: string }}) {
     const [itemVal, setItemVal] = useState(0.0);
     const [error, setError] = useState<string | null>(null);
 
+    // other info
+    const [textColor, setTextColor] = useState('text-[#1A5100]');
+
     const userID = params.uid;
 
     const removeItem = async (key: number) => {
@@ -31,11 +34,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
             const user = response.data;
             const userItems = user.items;
             const userItemCost = userItems[userItems.length-1-key].cost;
-            console.log(user);
-            console.log(spending);
-            console.log(userItemCost);
             const newSpend = parseFloat((spending + userItemCost).toFixed(2));
-            console.log(newSpend);
             
             await axios.delete(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/item/delete-item`, {
                 params: {
@@ -152,6 +151,14 @@ export default function Spending({ params }: { params: { uid: string }}) {
         loadUser();
     }, [])
 
+    useEffect(() => {
+        if (String(spending).charAt(0) === '-') {
+            setTextColor('text-red-500');
+        } else {
+            setTextColor('text-[#1A5100]');
+        }
+    }, [spending])
+
     return (
         <div className="bg-white h-fit lg:h-screen overflow-hidden">
             <Navbar/>
@@ -164,7 +171,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
                         alt='spendings icon'
                         src='/spend.jpg'
                         />
-                        <div className="text-2xl sm:text-4xl text-[#1A5100]">{String(spending).charAt(0) === '-' ? `${String(spending).charAt(0)}$${String(spending).slice(1)}` : `$${spending}`} (Spending)</div>
+                        <div className={`text-2xl sm:text-4xl ${textColor}`}>{String(spending).charAt(0) === '-' ? `${String(spending).charAt(0)}$${String(spending).slice(1)}` : `$${spending}`} (Spending)</div>
                     </div>
                     <div className="bg-white flex max-w-full w-96 place-content-evenly items-center text-center">
                         <Image 

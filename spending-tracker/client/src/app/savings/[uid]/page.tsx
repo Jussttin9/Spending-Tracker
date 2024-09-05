@@ -6,6 +6,7 @@ import ReceiptItem from "../../COMPONENTS/receipt_item";
 import Navbar from "../../navbar";
 import Image from "next/image";
 import axios from "axios";
+import { text } from "stream/consumers";
 
 interface Item {
     name: string;
@@ -22,6 +23,9 @@ export default function Savings({ params }: { params: { uid: string }}) {
     const [itemCost, setItemCost] = useState('');
     const [itemVal, setItemVal] = useState(0.0);
     const [error, setError] = useState<string | null>(null);
+
+    // other info
+    const [textColor, setTextColor] = useState('text-[#1A5100]');
 
     const userID = params.uid;
 
@@ -146,6 +150,14 @@ export default function Savings({ params }: { params: { uid: string }}) {
     useEffect(() => {
         loadUser();
     }, [])
+
+    useEffect(() => {
+        if (String(saving).charAt(0) === '-') {
+            setTextColor('text-red-500');
+        } else {
+            setTextColor('text-[#1A5100]');
+        }
+    }, [saving])
     
     return (
         <div className="bg-white h-fit">
@@ -159,7 +171,7 @@ export default function Savings({ params }: { params: { uid: string }}) {
                         alt='savings icon'
                         src='/save.jpg'
                         />
-                        <div className="text-2xl sm:text-4xl text-[#1A5100]">{String(saving).charAt(0) === '-' ? `${String(saving).charAt(0)}$${String(saving).slice(1)}` : `$${saving}`} (Savings)</div>
+                        <div className={`text-2xl sm:text-4xl ${textColor}`}>{String(saving).charAt(0) === '-' ? `${String(saving).charAt(0)}$${String(saving).slice(1)}` : `$${saving}`} (Savings)</div>
                     </div>
                 </section>
                 <section className="text-black flex flex-col lg:flex-row place-content-evenly items-center">
