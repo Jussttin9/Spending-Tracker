@@ -11,10 +11,6 @@ const getUser = async (req, res) => {
         .populate('savingsItems')
         .lean();
 
-        const explanation = await User.findById(userId).explain('executionStats');
-        console.log(explanation);
-
-
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
