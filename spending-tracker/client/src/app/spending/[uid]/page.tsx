@@ -30,9 +30,12 @@ export default function Spending({ params }: { params: { uid: string }}) {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/get-info/${userID}`);
             const user = response.data;
             const userItems = user.items;
-            console.log(userItems);
             const userItemCost = userItems[userItems.length-1-key].cost;
+            console.log(user);
+            console.log(spending);
+            console.log(userItemCost);
             const newSpend = parseFloat((spending + userItemCost).toFixed(2));
+            console.log(newSpend);
             
             await axios.delete(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/item/delete-item`, {
                 params: {
