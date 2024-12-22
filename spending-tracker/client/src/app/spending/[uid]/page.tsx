@@ -275,7 +275,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
                         <div className="text-2xl sm:text-4xl text-[#1A5100]">${weekly} <br/>(Weekly Spendings)</div>
                     </div>
                 </section>
-                <section className="text-black flex flex-col lg:flex-row place-content-evenly items-center">
+                <section className="text-black flex flex-col lg:flex-row place-content-evenly items-center mb-8 lg:mb-0">
                     <div>
                         <div className="absolute h-72 w-3/5 mobile-md:h-80 mobile-md:w-56 mobile-lg:h-92 mobile-lg:w-64 translate-x-16 translate-y-20 mobile-md:translate-x-20 mobile-md:translate-y-24 mobile-lg:translate-x-20 mobile-lg:translate-y-28 flex flex-col gap-1 overflow-auto">
                             <>
@@ -300,14 +300,14 @@ export default function Spending({ params }: { params: { uid: string }}) {
                             src="/receipt.png"
                         />
                     </div>
-                    <div className="bg-[#E9E9E9] h-80 w-80 mobile-lg:h-92 mobile-lg:w-96 sm:h-108 sm:w-120 flex flex-col place-content-evenly p-6">
+                    <div className="bg-[#E9E9E9] h-92 w-80 mobile-lg:h-92 mobile-lg:w-96 sm:h-108 sm:w-120 flex flex-col place-content-evenly p-6">
                         <div className="flex gap-2 justify-between">
                             <p className="text-xl mobile-lg:text-2xl sm:text-3xl text-center">What did you purchase?</p>
-                            <input onChange={handleName} placeholder="Item Name" value={itemName} type="text" required className="bg-[#D9D9D9] text-xl mobile-lg:text-2xl sm:text-3xl w-44"></input>
+                            <input onChange={handleName} placeholder="Item Name" value={itemName} type="text" required className="bg-[#D9D9D9] text-xl mobile-lg:text-2xl sm:text-3xl w-32 mobile-lg:w-44"></input>
                         </div>
                         <div className="flex gap-2 justify-between">
                             <p className="text-xl mobile-lg:text-2xl sm:text-3xl text-center">How much did it cost?</p>
-                            <input onChange={handleCost} placeholder="$0.00" value={itemCost} type="text" pattern="[0-9]*" required className="bg-[#D9D9D9] text-xl mobile-lg:text-2xl sm:text-3xl w-44"></input>
+                            <input onChange={handleCost} placeholder="$0.00" value={itemCost} type="text" pattern="[0-9]*" required className="bg-[#D9D9D9] text-xl mobile-lg:text-2xl sm:text-3xl w-32 mobile-lg:w-44"></input>
                         </div>
                         <div className="flex gap-2 justify-between">
                             <p className="text-xl mobile-lg:text-2xl sm:text-3xl text-center">Select a tag</p>
