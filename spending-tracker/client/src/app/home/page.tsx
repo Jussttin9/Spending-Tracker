@@ -77,8 +77,8 @@ export default function Home() {
             </div>
             </section>
             <section className="text-black flex place-content-evenly items-center gap-3 flex-col sm:flex-row md:flex-row lg:flex-row">
-            <Card page={`spending/${uid}`} img="/file.png" hoverImg="/vault_open.png" color="bg-[#E9E9E9]">Spending</Card>
-            <Card page={`budget/${uid}`} img="/Notebook.jpg" hoverImg="/vault_open.png" color="bg-[#E4DBD2]">Budget Tracker</Card>
+            <Card page={`spending/${uid}`} img="/file.png" hoverImg="/file.png" color="bg-[#E9E9E9]">Spending</Card>
+            <Card page={`budget/${uid}`} img="/Notebook.jpg" hoverImg="/Notebook.jpg" color="bg-[#E4DBD2]">Budget Tracker</Card>
             <Card page={`savings/${uid}`} img="/vault_closed.png" hoverImg="/vault_open.png" color="bg-[#E9E9E9]">Savings</Card>
             </section>
         </div>

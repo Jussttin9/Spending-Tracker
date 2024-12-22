@@ -17,6 +17,7 @@ const UserSchema = new Schema({
     savings: Number,
     spending: Number,
     budget: Number,
+    totalSpent: Number,
     weeklySpent: Number
 });
 

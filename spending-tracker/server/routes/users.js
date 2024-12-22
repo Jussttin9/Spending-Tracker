@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, getUser, deleteUser, lastUpdated, updateSaving, updateSpending, updateBudget, updateWeekly } = require('../controllers/userController');
+const { registerUser, getUser, deleteUser, lastUpdated, updateSaving, updateSpending, updateBudget, updateTrackSpending, updateWeekly } = require('../controllers/userController');
 
 // Route to get a user's information
 // Example:
@@ -41,6 +41,9 @@ router.put('/update-spending', updateSpending);
 
 // Route to update the user's budget
 router.put('/update-budget', updateBudget);
+
+// Route to update total spent
+router.put('/update-track-spending', updateTrackSpending);
 
 // Route to update the user's weekly average
 router.put('/update-weekly', updateWeekly);

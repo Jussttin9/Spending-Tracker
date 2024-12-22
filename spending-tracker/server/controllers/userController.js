@@ -143,6 +143,30 @@ const updateBudget = async (req, res) => {
     }
 };
 
+const updateTrackSpending = async (req, res) => {
+    try {
+        const { userID, cost } = req.body;
+        const user = await User.findById(userID);
+        if (!user) {
+            throw new Error('User not found in MongoDB');
+        }
+
+        if (user.hasOwnProperty('propertyName')) {
+            let totalSpent = user.totalSpent;
+            user.totalSpent = totalSpent + cost;
+        } else {
+            const items = user.items;
+            const totalCost = items.reduce((sum, item) => sum + item.cost, 0);
+            user.totalSpent = totalCost + cost;
+        }
+
+        await user.save();
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 const updateWeekly = async (req, res) => {
     try {
         const { userID, newWeekly } = req.body;
@@ -150,6 +174,12 @@ const updateWeekly = async (req, res) => {
         if (!user) {
             throw new Error('User not found in MongoDB');
         }
+
+        const curDate = new Date();
+        let weeks = (user.createdUser - curDate) / (1000*60*60*24*7);
+
+
+
 
         const updatedUser = await User.findByIdAndUpdate(userID, {
             $set: {
@@ -163,4 +193,4 @@ const updateWeekly = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, getUser, deleteUser, lastUpdated, updateSaving, updateSpending, updateBudget, updateWeekly };
+module.exports = { registerUser, getUser, deleteUser, lastUpdated, updateSaving, updateSpending, updateBudget, updateTrackSpending, updateWeekly };
