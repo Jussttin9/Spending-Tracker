@@ -48,6 +48,17 @@ export default function Spending({ params }: { params: { uid: string }}) {
                 newSpending: newSpend
             });
 
+            await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-track-spending`, {
+                userID: userID,
+                cost: -userItemCost
+            });
+
+            await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-weekly`, {
+                userID: userID
+            });
+
+            const totalSpent = response.data.weeklySpent;
+
             const newItems = [];
             const reversedItems = items.slice().reverse();
 
@@ -58,6 +69,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
             }
             setItems(newItems);
             setSpending(newSpend);
+            setWeekly(totalSpent);
         } catch (error) {
             console.error("Failed to delete item:", error);
         }
