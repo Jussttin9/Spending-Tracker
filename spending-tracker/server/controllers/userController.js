@@ -170,7 +170,7 @@ const updateWeekly = async (req, res) => {
         }
 
         const curDate = new Date();
-        let weeks = (user.createdUser - curDate) / (1000*60*60*24*7);
+        let weeks = (curDate - user.createdUser) / (1000*60*60*24*7);
         user.weeklySpent = (user.totalSpent / weeks).toFixed(2);
 
         user.save();
