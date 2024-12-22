@@ -163,7 +163,7 @@ const updateTrackSpending = async (req, res) => {
 
 const updateWeekly = async (req, res) => {
     try {
-        const { userID, newWeekly } = req.body;
+        const { userID } = req.body;
         const user = await User.findById(userID);
         if (!user) {
             throw new Error('User not found in MongoDB');
@@ -171,15 +171,9 @@ const updateWeekly = async (req, res) => {
 
         const curDate = new Date();
         let weeks = (user.createdUser - curDate) / (1000*60*60*24*7);
+        user.weeklySpent = (user.totalSpent / weeks).toFixed(2);
 
-
-
-
-        const updatedUser = await User.findByIdAndUpdate(userID, {
-            $set: {
-                weeklySpent: newWeekly
-            }
-        }, { new: true })
+        user.save();
 
         res.status(200).json(updatedUser);
     } catch (error) {
