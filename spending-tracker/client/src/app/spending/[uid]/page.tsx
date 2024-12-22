@@ -5,13 +5,27 @@ import Navbar from "../../navbar";
 import Image from "next/image";
 import axios from "axios";
 import ReceiptItem from "../../COMPONENTS/receipt_item";
+import PieChart from "@/app/COMPONENTS/pie_chart";
 
 interface Item {
     name: string;
     cost: number;
+    tag: string;
 }
 
 export default function Spending({ params }: { params: { uid: string }}) {
+    let food_and_drink = 0;
+    let entertainment = 0;
+    let shopping = 0;
+    let travel = 0;
+    let gifts = 0;
+    let other = 0;
+    const labels = ['Food & Drinks', 'Entertainment', 'Shopping', 'Travel', 'Gifts', 'Other'];
+    const backgroundColors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#000000', '#8F22A9'];
+
+    const [data, setData] = useState([food_and_drink, entertainment, shopping, travel, gifts, other]);
+    const [dataModified, setDataModified] = useState(false);
+
     // user info
     const [items, setItems] = useState<Item[]>([]);
     const [weekly, setWeekly] = useState(0);
@@ -28,6 +42,54 @@ export default function Spending({ params }: { params: { uid: string }}) {
     const [textColor, setTextColor] = useState('text-[#1A5100]');
 
     const userID = params.uid;
+
+    function trackTags (item: Item) {
+        switch (item.tag) {
+            case "food-and-drink":
+                food_and_drink += item.cost;
+                break;
+            case "entertainment":
+                entertainment += item.cost;
+                break;
+            case "shopping":
+                shopping += item.cost;
+                break;
+            case "travel":
+                travel += item.cost;
+                break;
+            case "gifts":
+                gifts += item.cost;
+                break;
+            case "other":
+                other += item.cost;
+                break;
+            default:
+                break;
+        }
+    }
+
+    const gatherItemCategories = async () => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/get-info/${userID}`);
+            const user = response.data;
+            const userItems = user.items;
+
+            // Updates running totals
+            userItems.forEach(trackTags);
+            const newData = [
+                parseFloat(food_and_drink.toFixed(2)), 
+                parseFloat(entertainment.toFixed(2)), 
+                parseFloat(shopping.toFixed(2)), 
+                parseFloat(travel.toFixed(2)), 
+                parseFloat(gifts.toFixed(2)),
+                parseFloat(other.toFixed(2))
+            ]
+            setData(newData);
+            setDataModified(true);
+        } catch (error) {
+            console.error("Couldn't categorize items:", error);
+        }
+    }
 
     const removeItem = async (key: number) => {
         try {
@@ -82,14 +144,14 @@ export default function Spending({ params }: { params: { uid: string }}) {
             const user = response.data;
             setItems(user.items);
             setSpending(user.spending);
-            setWeekly(user.weeklySpent)
+            setWeekly(user.weeklySpent);
         } catch (error) {
             console.error("Failed to load user:", error);
         }
     }
 
     const loadItems = () => {
-        setItems(items => [...items, { name: itemName, cost: itemVal}]);
+        setItems(items => [...items, { name: itemName, cost: itemVal, tag: tag}]);
     }
 
     const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -179,6 +241,9 @@ export default function Spending({ params }: { params: { uid: string }}) {
 
     useEffect(() => {
         loadUser();
+        if (!dataModified) {
+            gatherItemCategories();
+        }
     }, [])
 
     useEffect(() => {
@@ -190,7 +255,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
     }, [spending])
 
     return (
-        <div className="bg-white h-fit lg:h-screen overflow-hidden">
+        <div className="bg-white h-fit lg:h-fit overflow-hidden">
             <Navbar/>
             <div className="h-5/6 flex flex-col place-content-evenly">
                 <section className="text-black flex flex-col md:flex-row place-content-evenly items-center p-5">
@@ -218,6 +283,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
                         <div className="absolute h-72 w-3/5 mobile-md:h-80 mobile-md:w-56 mobile-lg:h-92 mobile-lg:w-64 translate-x-16 translate-y-20 mobile-md:translate-x-20 mobile-md:translate-y-24 mobile-lg:translate-x-20 mobile-lg:translate-y-28 flex flex-col gap-1 overflow-auto">
                             <>
                                 {items.slice().reverse().map((item, index) => (
+                                    <>
                                     <ReceiptItem 
                                     key={index}
                                     itemKey={index} 
@@ -225,6 +291,8 @@ export default function Spending({ params }: { params: { uid: string }}) {
                                     cost={`$${item.cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
                                     onClick={removeItem}
                                     />
+                                    <hr className="border-2 border-black border-dotted"/>
+                                    </>
                                 ))}
                             </>
                         </div>
@@ -253,12 +321,16 @@ export default function Spending({ params }: { params: { uid: string }}) {
                                 <option value="shopping">Shopping</option>
                                 <option value="travel">Travel</option>
                                 <option value="gifts">Gifts</option>
+                                <option value="other">Other</option>
                             </select>
                         </div>
                         <div className="text-center">{error}</div>
                         <button onClick={handleClick}><div className="bg-[#D9D9D9] flex flex-col place-content-evenly h-14">Enter</div></button>
                     </div>
                 </section>
+            </div>
+            <div className="h-1/2">
+                <PieChart data={data} labels={labels} backgroundColors={backgroundColors}/>
             </div>
         </div>
     
