@@ -134,10 +134,22 @@ export default function Spending({ params }: { params: { uid: string }}) {
                     newSpending: newSpend
                 });
 
+                await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-track-spending`, {
+                    userID: userID,
+                    cost: itemVal
+                });
+
+                const response = await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-weekly`, {
+                    userID: userID
+                });
+
+                const totalSpent = response.data.weeklySpent;
+
                 loadItems();
                 setItemName('');
                 setItemCost('');
                 setSpending(newSpend);
+                setWeekly(totalSpent);
             } catch (error) {
                 console.error("Failed to add item:", error);
                 setError("Failed to add item. Please try again later.");
