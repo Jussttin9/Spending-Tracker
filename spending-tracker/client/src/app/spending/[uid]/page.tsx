@@ -85,7 +85,6 @@ export default function Spending({ params }: { params: { uid: string }}) {
                 parseFloat(other.toFixed(2))
             ]
             setData(newData);
-            setDataModified(true);
         } catch (error) {
             console.error("Couldn't categorize items:", error);
         }
@@ -241,9 +240,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
 
     useEffect(() => {
         loadUser();
-        if (!dataModified) {
-            gatherItemCategories();
-        }
+        gatherItemCategories();
     }, [])
 
     useEffect(() => {
@@ -329,7 +326,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
                     </div>
                 </section>
             </div>
-            <div className="h-1/2">
+            <div className="h-112">
                 <PieChart data={data} labels={labels} backgroundColors={backgroundColors}/>
             </div>
         </div>
