@@ -46,7 +46,7 @@ router.put('/update-budget', updateBudget);
 router.put('/update-track-spending', updateTrackSpending);
 
 // Route to update the user's weekly average
-router.put('/update-weekly', updateWeekly);
+router.get('/update-weekly', updateWeekly);
 
 
 // Route to delete a user
