@@ -151,14 +151,16 @@ const updateTrackSpending = async (req, res) => {
             throw new Error('User not found in MongoDB');
         }
 
-        if (user.hasOwnProperty('propertyName')) {
-            let totalSpent = user.totalSpent;
-            user.totalSpent = totalSpent + cost;
-        } else {
-            const items = user.items;
-            const totalCost = items.reduce((sum, item) => sum + item.cost, 0);
-            user.totalSpent = totalCost + cost;
-        }
+        user.totalSpent = 1633.48;
+
+        // if (user.hasOwnProperty('propertyName')) {
+        //     let totalSpent = user.totalSpent;
+        //     user.totalSpent = totalSpent + cost;
+        // } else {
+        //     const items = user.items;
+        //     const totalCost = items.reduce((sum, item) => sum + item.cost, 0);
+        //     user.totalSpent = totalCost + cost;
+        // }
 
         await user.save();
         res.status(200).json(user);
