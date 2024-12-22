@@ -21,6 +21,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
     const [itemName, setItemName] = useState('');
     const [itemCost, setItemCost] = useState('');
     const [itemVal, setItemVal] = useState(0.0);
+    const [tag, setTag] = useState('');
     const [error, setError] = useState<string | null>(null);
 
     // other info
@@ -53,11 +54,11 @@ export default function Spending({ params }: { params: { uid: string }}) {
                 cost: -userItemCost
             });
 
-            await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-weekly`, {
+            const newResponse = await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-weekly`, {
                 userID: userID
             });
 
-            const totalSpent = response.data.weeklySpent;
+            const totalSpent = newResponse.data.weeklySpent;
 
             const newItems = [];
             const reversedItems = items.slice().reverse();
@@ -129,14 +130,19 @@ export default function Spending({ params }: { params: { uid: string }}) {
         setItemCost(price)
     }
 
+    const handleTag = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setTag(event.target.value);
+    }
+
     const handleClick = async () => {
         setError(null);
-        if (itemName.length > 0) {
+        if (itemName.length > 0 && tag != '') {
             try {
                 await axios.post(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/item/add-item`, {
                     userID: userID,
                     name: itemName,
-                    cost: itemVal
+                    cost: itemVal,
+                    tag: tag
                 });
 
                 const newSpend = parseFloat((spending - itemVal).toFixed(2));
@@ -230,13 +236,24 @@ export default function Spending({ params }: { params: { uid: string }}) {
                         />
                     </div>
                     <div className="bg-[#E9E9E9] h-80 w-80 mobile-lg:h-92 mobile-lg:w-96 sm:h-108 sm:w-120 flex flex-col place-content-evenly p-6">
-                        <div className="flex gap-2 place-content-evenly">
+                        <div className="flex gap-2 justify-between">
                             <p className="text-xl mobile-lg:text-2xl sm:text-3xl text-center">What did you purchase?</p>
                             <input onChange={handleName} placeholder="Item Name" value={itemName} type="text" required className="bg-[#D9D9D9] text-xl mobile-lg:text-2xl sm:text-3xl w-44"></input>
                         </div>
-                        <div className="flex gap-2 place-content-evenly">
+                        <div className="flex gap-2 justify-between">
                             <p className="text-xl mobile-lg:text-2xl sm:text-3xl text-center">How much did it cost?</p>
                             <input onChange={handleCost} placeholder="$0.00" value={itemCost} type="text" pattern="[0-9]*" required className="bg-[#D9D9D9] text-xl mobile-lg:text-2xl sm:text-3xl w-44"></input>
+                        </div>
+                        <div className="flex gap-2 justify-between">
+                            <p className="text-xl mobile-lg:text-2xl sm:text-3xl text-center">Select a tag</p>
+                            <select onChange={handleTag} required className="bg-[#D9D9D9] text-lg mobile-lg:text-xl sm:text-2xl w-52">
+                                <option value="">Select a tag</option>
+                                <option value="food-and-drink">Food & Drinks</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="travel">Travel</option>
+                                <option value="gifts">Gifts</option>
+                            </select>
                         </div>
                         <div className="text-center">{error}</div>
                         <button onClick={handleClick}><div className="bg-[#D9D9D9] flex flex-col place-content-evenly h-14">Enter</div></button>

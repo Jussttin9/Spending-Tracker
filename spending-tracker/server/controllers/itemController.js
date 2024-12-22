@@ -3,7 +3,7 @@ const User = require('../database_schema/userSchema');
 
 const addItem = async (req, res) => {
     try {
-        const { userID, name, cost } = req.body;
+        const { userID, name, cost, tag } = req.body;
         const user = await User.findById(userID);
 
         if (!user) {
@@ -12,7 +12,8 @@ const addItem = async (req, res) => {
 
         const newItem = new Item ({
             name: name,
-            cost: cost
+            cost: cost,
+            tag: tag
         })
 
         await newItem.save();

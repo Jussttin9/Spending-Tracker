@@ -3,7 +3,8 @@ const { Schema } = mongoose;
 
 const ItemSchema = new Schema({
     name: String,
-    cost: Number
+    cost: Number,
+    tag: String
 });
 
 const Item = mongoose.model('Item', ItemSchema);
