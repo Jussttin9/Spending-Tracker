@@ -175,7 +175,7 @@ const updateWeekly = async (req, res) => {
 
         user.save();
 
-        res.status(200).json(updatedUser);
+        res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
