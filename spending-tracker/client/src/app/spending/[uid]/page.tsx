@@ -21,7 +21,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
     let gifts = 0;
     let other = 0;
     const labels = ['Food & Drinks', 'Entertainment', 'Shopping', 'Travel', 'Gifts', 'Other'];
-    const backgroundColors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#000000', '#8F22A9'];
+    const backgroundColors = ['#ffe0e9', '#ffc2d4', '#ff9ebb', '#ff7aa2', '#e05780', '#b9375e'];
 
     const [data, setData] = useState([food_and_drink, entertainment, shopping, travel, gifts, other]);
     const [dataModified, setDataModified] = useState(false);
@@ -199,14 +199,18 @@ export default function Spending({ params }: { params: { uid: string }}) {
         setError(null);
         if (itemName.length > 0 && tag != '') {
             try {
+                const newSpend = parseFloat((spending - itemVal).toFixed(2));
+                loadItems();
+                setItemName('');
+                setItemCost('');
+                setSpending(newSpend);
+
                 await axios.post(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/item/add-item`, {
                     userID: userID,
                     name: itemName,
                     cost: itemVal,
                     tag: tag
                 });
-
-                const newSpend = parseFloat((spending - itemVal).toFixed(2));
 
                 await axios.put(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/user/update-spending`, {
                     userID: userID,
@@ -223,11 +227,6 @@ export default function Spending({ params }: { params: { uid: string }}) {
                 });
 
                 const totalSpent = response.data.weeklySpent;
-
-                loadItems();
-                setItemName('');
-                setItemCost('');
-                setSpending(newSpend);
                 setWeekly(totalSpent);
             } catch (error) {
                 console.error("Failed to add item:", error);
