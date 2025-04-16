@@ -40,6 +40,8 @@ export default function Spending({ params }: { params: { uid: string }}) {
 
     // other info
     const [textColor, setTextColor] = useState('text-[#1A5100]');
+    const [deletePopup, setDeletePopup] = useState(false);
+    const [deleteItem, setDeleteItem] = useState({index: -1, name: ''});
 
     const userID = params.uid;
 
@@ -97,6 +99,17 @@ export default function Spending({ params }: { params: { uid: string }}) {
             const userItems = user.items;
             const userItemCost = userItems[userItems.length-1-key].cost;
             const newSpend = parseFloat((spending + userItemCost).toFixed(2));
+
+            const newItems = [];
+            const reversedItems = items.slice().reverse();
+
+            for (let i = reversedItems.length-1; i >= 0; i--) {
+                if(i !== key) {
+                    newItems.push(reversedItems[i]);
+                }
+            }
+            setItems(newItems);
+            setSpending(newSpend);
             
             await axios.delete(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/item/delete-item`, {
                 params: {
@@ -120,17 +133,6 @@ export default function Spending({ params }: { params: { uid: string }}) {
             });
 
             const totalSpent = newResponse.data.weeklySpent;
-
-            const newItems = [];
-            const reversedItems = items.slice().reverse();
-
-            for (let i = reversedItems.length-1; i >= 0; i--) {
-                if(i !== key) {
-                    newItems.push(reversedItems[i]);
-                }
-            }
-            setItems(newItems);
-            setSpending(newSpend);
             setWeekly(totalSpent);
         } catch (error) {
             console.error("Failed to delete item:", error);
@@ -285,7 +287,7 @@ export default function Spending({ params }: { params: { uid: string }}) {
                                     itemKey={index} 
                                     item={item.name} 
                                     cost={`$${item.cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-                                    onClick={removeItem}
+                                    onClick={() => { setDeleteItem({index: index, name: item.name}); setDeletePopup(!deletePopup); }}
                                     />
                                     <hr className="border-2 border-black border-dotted"/>
                                     </>
@@ -328,6 +330,13 @@ export default function Spending({ params }: { params: { uid: string }}) {
             <div className="h-112">
                 <PieChart data={data} labels={labels} backgroundColors={backgroundColors}/>
             </div>
+            <div className={`text-black bg-[#D9D9D9] flex-col items-center gap-5 absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] z-50 h-92 w-80 mobile-lg:h-92 mobile-lg:w-96 sm:h-108 sm:w-120 p-6 ${deletePopup ? 'flex' : 'hidden'}`}>
+                <h1>Are you sure you want to delete this item?</h1>
+                <h2>{deleteItem.name}</h2>
+                <button className="border border-black h-[10%] w-[10%]" onClick={() => {removeItem(deleteItem.index); setDeletePopup(!deletePopup); }}>Yes</button>
+                <button className="border border-black h-[10%] w-[10%]" onClick={() => setDeletePopup(!deletePopup)}>No</button>
+            </div>
+            <div className={`fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm z-40 ${deletePopup ? 'block' : 'hidden'}`} onClick={() => setDeletePopup(!deletePopup)} />
         </div>
     
     );
